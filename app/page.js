@@ -4,6 +4,9 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { createUser } from "@/utils/actions/action"; 
+import AdminPage from "@/components/AdminPage";
+import ManagerPage from "@/components/ManagerPage";
+
 
 import GoogleMapView from "@/components/GoogleMapView";
 
@@ -28,10 +31,20 @@ export default function Home() {
         console.error("Error creating user:", error);
       }
     };
+    
 
     handleUserCreation();
   }, [isLoaded, isSignedIn, user]);
-
+  if(isLoaded && isSignedIn){
+    if(user.primaryEmailAddress.emailAddress=='anketkadam61@gmail.com'){
+      return <AdminPage/>;
+    }
+  }
+  if(isLoaded && isSignedIn){
+    if(user.primaryEmailAddress.emailAddress=='2021.anket.kadam@ves.ac.in'){
+      return <ManagerPage/>;
+    }
+  }
   return (
     <main className="relative h-screen overflow-hidden bg-white">
       {/* Background Design */}

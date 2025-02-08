@@ -7,10 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ['latin'] });
 
-const MENUITEMS = [
-  { label: 'Register', href: '/register', style: 'button-register' },
-  { label: 'Log in', href: '/login', style: 'button-login' },
-];
+
 
 const onClick=()=>{
   console.log("working")
@@ -33,16 +30,7 @@ export default function RootLayout({ children }) {
               User
             </div>
           </div>
-          {/* Menu Items */}
-          <nav className="flex items-center gap-4">
-              <button
-                onClick={()=>onClick}
-                className="px-4 py-2 font-semibold rounded 
-                  bg-white border-4 border-yellow-300 text-black">
-                SignIn
-              </button>
-         
-          </nav>
+          
         </header>
 
         {/* Main Content */}
