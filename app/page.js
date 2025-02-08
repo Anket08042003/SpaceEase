@@ -1,101 +1,68 @@
+"use client"
 import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
+import { createUser } from "@/utils/actions/action"; 
+
+import GoogleMapView from "@/components/GoogleMapView";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { isSignedIn, user, isLoaded } = useUser();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const handleUserCreation = async () => {
+      try {
+        if (isLoaded && isSignedIn) {
+          const User = {
+            clerkId: user.id,
+            email: user.primaryEmailAddress.emailAddress,
+            name: user.firstName,
+          };
+
+          // console.log(user);
+          const newUser = await createUser(User);
+          //console.log(newUser);
+        }
+      } catch (error) {
+        console.error("Error creating user:", error);
+      }
+    };
+
+    handleUserCreation();
+  }, [isLoaded, isSignedIn, user]);
+
+  return (
+    <main className="relative h-screen overflow-hidden bg-white">
+      {/* Background Design */}
+     
+
+      {/* Content Section */}
+      <div className="relative z-10 flex flex-col items-start p-8 space-y-4">
+        {/* Title */}
+        <div className="text-8xl bg-amber-300 font-extrabold text-black leading-none">
+          <span>Need</span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div className="text-8xl bg-amber-300 font-extrabold text-black leading-none">
+          <span>parking?</span>
+        </div>
+
+        {/* Search Button */}
+        <Link
+          href="/search"
+          className="flex items-center px-6 py-3 text-xl font-medium text-black bg-yellow-400  shadow-md hover:bg-yellow-500 transition"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Search now
+        </Link>
+      </div>
+      <GoogleMapView/>
+      {/* Additional Quote */}
+      <div className="absolute bottom-4 left-8 text-gray-300 text-sm">
+        <p>
+          I've seen unicorns, the Loch Ness monster, but a free parking spot?
+          Never.
+        </p>
+      </div>
+    </main>
   );
 }
