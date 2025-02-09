@@ -36,7 +36,7 @@ export default function Home() {
     handleUserCreation();
   }, [isLoaded, isSignedIn, user]);
   if(isLoaded && isSignedIn){
-    if(user.primaryEmailAddress.emailAddress=='anketkadam61@gmail.com'){
+    if(user.primaryEmailAddress.emailAddress=='ankkadam61@gmail.com'){
       return <AdminPage/>;
     }
   }
