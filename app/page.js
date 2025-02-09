@@ -41,7 +41,7 @@ export default function Home() {
     }
   }
   if(isLoaded && isSignedIn){
-    if(user.primaryEmailAddress.emailAddress=='2021.anket.kadam@ves.ac.in'){
+    if(user.primaryEmailAddress.emailAddress=='anketkadam61@gmail.com'){
       return <ManagerPage/>;
     }
   }
